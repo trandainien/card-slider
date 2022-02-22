@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Slider</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .sliders {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .card {
+        opacity: 0;
+        background-color: #fff;
+        padding: 2em 2em;
+        width: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        position: relative;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        transform: translate(-300px, -50%);
+        overflow: hidden;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+
+        transition: 0.2s ease-in-out 200ms;
+      }
+      .card[data-active] {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+        transition-delay: 0ms;
+      }
+
+      .img {
+        height: 120px;
+        width: 120px;
+
+        z-index: 1;
+        margin-bottom: 1em;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: relative;
+        border-radius: 50%;
+        border: 3px solid #ffbbbb;
+      }
+
+      .layer {
+        position: absolute;
+        background-color: #ffbbbb;
+        width: 100%;
+        height: 100px;
+        top: 0;
+      }
+      .media-icons {
+        padding: 1em;
+
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .fa-brands {
+        margin-top: 0.3em;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .fa-brands:hover {
+        color: #fff;
+        transform: scale(1.3);
+      }
+      .content {
+        text-align: center;
+      }
+      .name {
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+
+      .profession {
+        font-weight: 300;
+        font-size: 0.9rem;
+        margin-bottom: 1em;
+      }
+      .btns {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+      button {
+        margin: 0 0.5em;
+        border: none;
+        outline: none;
+        background-color: #ffbbbb;
+        border-radius: 20px;
+        padding: 0.2em 1em;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #fff;
+        box-shadow: 0 0 5px 0 #ffbbbb;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+      }
+      button:hover {
+        transform: scale(1.1);
+      }
+      .prev,
+      .next {
+        position: absolute;
+        top: 48%;
+        z-index: 1;
+      }
+      .prev {
+        left: 500px;
+      }
+      .next {
+        right: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sliders" data-sliders>
+      <button class="next" data-btn="next">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+      <button class="prev" data-btn="prev">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <div class="cards" data-cards>
+        <div class="card" data-active>
+          <div class="layer"></div>
+          <div class="img">
+            <img src="./photo-1497215728101-856f4ea42174.jpg" alt="" />
+          </div>
+          <div class="media-icons">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-github"></i>
+          </div>
+
+          <div class="content">
+            <div class="name">Tran Dai Nien</div>
+            <div class="profession">Web Developer</div>
+            <div class="rating"></div>
+          </div>
+
+          <div class="btns">
+            <button>About me</button>
+            <button>Hire me</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const imgs = [
+        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+        "https://images.unsplash.com/photo-1614436163996-25cee5f54290?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=442&q=80",
+        "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+      ];
+
+      const cards = document.querySelector("[data-cards]");
+
+      fetch("https://jsonplaceholder.typicode.com/users")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+
+          data.forEach(({ name, email }, index) => {
+            console.log(imgs[index]);
+            const user = document.createElement("div");
+            user.classList.add("card");
+            user.innerHTML = `
+             <div class="layer"></div>
+                <div class="img">
+                <img src=${imgs[index]} alt="" />
+                </div>
+                <div class="media-icons">
+                <i class="fa-brands fa-facebook"></i>
+                <i class="fa-brands fa-twitter"></i>
+                <i class="fa-brands fa-github"></i>
+                </div>
+
+                <div class="content">
+                <div class="name">${name}</div>
+                <div class="profession">${email}</div>
+                <div class="rating"></div>
+                </div>
+
+                <div class="btns">
+                <button>About me</button>
+                <button>Hire me</button>
+                </div>
+            `;
+
+            cards.appendChild(user);
+          });
+        });
+
+      const btns = document.querySelectorAll("[data-btn]");
+
+      let currentIndex = 0;
+
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const offset = btn.dataset.btn === "next" ? 1 : -1;
+          console.log(offset);
+
+          let newIndex = currentIndex + offset;
+
+          if (newIndex >= 11) {
+            newIndex = 0;
+          }
+          if (newIndex < 0) {
+            newIndex = 10;
+          }
+
+          delete cards.children[currentIndex].dataset.active;
+          cards.children[newIndex].dataset.active = "true";
+
+          currentIndex = newIndex;
+        });
+      });
+    </script>
+  </body>
+</html>
